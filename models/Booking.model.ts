@@ -53,6 +53,10 @@ const BookingSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
+	flat: {
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "Flat",
+	},
 })
 
 export type BookingType = {

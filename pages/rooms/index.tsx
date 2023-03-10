@@ -1,36 +1,45 @@
-import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid"
-import Modal from "@mui/material/Modal"
+import { DataGrid, GridColDef } from "@mui/x-data-grid"
 
 import { useState } from "react"
 import dbConnect from "@/lib/dbConnect"
-import Rooms from "@/models/Room.model"
+import Flats from "@/models/flat.model"
 import { useRouter } from "next/router"
 import Header from "@/components/header"
 
 const columns: GridColDef[] = [
 	{
-		field: "name",
+		field: "Name",
 		headerName: "Name",
 		width: 200,
 	},
 	{
-		field: "price",
+		field: "Room Type",
+		headerName: "Room Type",
+		width: 200,
+	},
+	{
+		field: "Price",
 		headerName: "Price",
 		width: 200,
 	},
 	{
-		field: "shortCode",
-		headerName: "Short Code",
+		field: "AC/Non-AC",
+		headerName: "AC/Non-AC",
 		width: 200,
 	},
 	{
-		field: "count",
-		headerName: "Count",
+		field: "Occupied",
+		headerName: "Occupied ?",
 		width: 200,
 	},
 	{
-		field: "status",
+		field: "Status",
 		headerName: "Status",
+		width: 200,
+	},
+	{
+		field: "Last Booked By",
+		headerName: "Last Booked By",
 		width: 200,
 	},
 ]
@@ -66,173 +75,26 @@ export default function Roo({ rooms }) {
 			<main className="p-4 bg-primaryBg">
 				<div className="flex p-4 justify-between">
 					<div>
-						<h1 className="font-poppins text-2xl">Room Type</h1>
+						<h1 className="font-poppins text-2xl">Room List</h1>
 						<p>
-							Here are various types of rooms in the hotel. Click
-							add to add new type of room.
+							Here are various rooms in the hotel with their
+							current status.
 						</p>
 					</div>
-					<button
-						className="p-3 my-auto w-fit h-fit bg-blue-500 rounded-full scale-1 hover:scale-[1.1] transition-all ease-in-out duration-100"
-						onClick={() => setEditModalOpen(true)}
-					>
-						<svg
-							xmlns="http://www.w3.org/2000/svg"
-							width="24"
-							height="24"
-							viewBox="0 0 24 24"
-						>
-							<path
-								fill="white"
-								d="M24 10h-10v-10h-4v10h-10v4h10v10h4v-10h10z"
-							/>
-						</svg>
-					</button>
 				</div>
 				<div className="h-[60vh] min-h-[60vh]  w-fit p-4">
 					<DataGrid
 						rows={rooms}
 						columns={columns}
 						getRowClassName={(params) => {
-							return params.row.status === "Active"
-								? "bg-green-400 cursor-pointer text-white hover:bg-green-600"
-								: "bg-red-400 cursor-pointer text-white hover:bg-red-600"
+							if (params.row.Status === "Occupied") {
+								return "bg-green-100 cursor-pointer"
+							} else {
+								return "bg-blue-100 cursor-pointer"
+							}
 						}}
 					/>
 				</div>
-
-				<Modal
-					open={editModalOpen}
-					onClose={() => setEditModalOpen(false)}
-					aria-labelledby="modal-modal-title"
-					aria-describedby="modal-modal-description"
-				>
-					<div className="bg-white rounded-md m-6 p-4 min-h-[400px] w-fit mx-auto px-60">
-						<h1 className="p-2 font-poppins font-bold text-2xl">
-							Add New Room Type:
-						</h1>
-						<form onSubmit={handleSubmit}>
-							<table>
-								<tr>
-									<td>
-										<label
-											className="p-2 mr-6"
-											htmlFor="name"
-										>
-											Name:
-										</label>
-									</td>
-									<td>
-										<input
-											className="border p-2 outline-none focus:border-2"
-											type="text"
-											name="name"
-											id="name"
-											placeholder="Enter Room Name"
-										/>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<label
-											className="p-2 mr-6"
-											htmlFor="price"
-										>
-											Price:
-										</label>
-									</td>
-									<td>
-										<input
-											className="border p-2 outline-none focus:border-2"
-											type="number"
-											name="price"
-											id="price"
-											placeholder="Enter Room Price"
-										/>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<label
-											className="p-2 mr-6"
-											htmlFor="shortCode"
-										>
-											Short Code:
-										</label>
-									</td>
-									<td>
-										<input
-											className="border p-2 outline-none focus:border-2"
-											type="text"
-											name="shortCode"
-											id="shortCode"
-											placeholder="Enter Room Short Code"
-										/>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<label
-											className="p-2 mr-6"
-											htmlFor="count"
-										>
-											Count:
-										</label>
-									</td>
-									<td>
-										<input
-											className="border p-2 outline-none focus:border-2"
-											type="number"
-											name="count"
-											id="count"
-											placeholder="Enter Room Count"
-										/>
-									</td>
-								</tr>
-								<tr>
-									<td>
-										<label
-											className="p-2 mr-6"
-											htmlFor="status"
-										>
-											Status:
-										</label>
-									</td>
-									<td>
-										<select
-											name="status"
-											id="status"
-											className="border p-2 outline-none focus:border-2"
-										>
-											<option value="Active" selected>
-												Active
-											</option>
-											<option value="InActive">
-												InActive
-											</option>
-										</select>
-									</td>
-								</tr>
-							</table>
-
-							<div className="flex mt-4">
-								<button
-									type="submit"
-									className="p-2 bg-green-500 w-[100px] text-white rounded-md hover:scale-[1.1] transition-all ease-in-out duration-100"
-								>
-									Add
-								</button>
-								<button
-									type="button"
-									onClick={() => setEditModalOpen(false)}
-									className="p-2 w-[100px] text-blue-500 rounded-md ml-2 hover:scale-[1.1] transition-all ease-in-out duration-100"
-								>
-									Cancel
-								</button>
-							</div>
-						</form>
-					</div>
-				</Modal>
 			</main>
 		</>
 	)
@@ -240,17 +102,38 @@ export default function Roo({ rooms }) {
 
 export async function getServerSideProps() {
 	await dbConnect()
-	const res = await Rooms.find({})
+	const res = await Flats.find({}).populate("type").populate("user")
 	const data = res.map((doc, idx) => {
-		const room = doc.toObject()
-		room.id = idx + 1
-		delete room._id
-		return room
+		return doc.toObject()
 	})
+	// console.log(data)
+	const k: { [x: string]: string | number }[] = []
 
+	data.forEach(
+		(room: {
+			name: string | number
+			type: string | number
+			occupied: any
+			user: { firstName: string | number }
+		}) => {
+			var d: { [x: string]: string | number } = {}
+			d["id"] = room.name
+			d["Name"] = room.name
+			// @ts-ignore
+			d["Room Type"] = room.type.name
+			// @ts-ignore
+			d["Price"] = room.type.price
+			d["AC/Non-AC"] = "AC"
+			d["Occupied"] = room.occupied ? "Yes" : "No"
+			d["Status"] = room.occupied ? "Occupied" : "Vacant"
+			d["Last Booked By"] = room.user ? room.user.firstName : "N/A"
+			k.push(d)
+		}
+	)
+	console.log(k)
 	return {
 		props: {
-			rooms: data,
+			rooms: k,
 		},
 	}
 }

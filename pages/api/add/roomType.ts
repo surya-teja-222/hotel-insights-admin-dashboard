@@ -26,6 +26,7 @@ export default async function POST(request: Request) {
 				const flat = new FlatModel({
 					name: `${name} ${i}`,
 					type: roomType._id,
+					scode: shortCode,
 					occupied: false,
 					status: "Active",
 				})

@@ -29,6 +29,12 @@ export default function Header() {
 					>
 						Rooms
 					</Link>
+					<Link
+						className="hover:underline transition-all ease-in-out duration-100 hover:scale-[1.1] focus:outline outline-none "
+						href="/rooms/type"
+					>
+						Room Types
+					</Link>
 				</div>
 			</div>
 		</header>

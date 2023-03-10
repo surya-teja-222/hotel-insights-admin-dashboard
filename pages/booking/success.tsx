@@ -1,3 +1,4 @@
+// @ts-no-check
 /* eslint-disable @next/next/no-img-element */
 import dbConnect from "@/lib/dbConnect"
 import BookingModel, { BookingType } from "@/models/Booking.model"
@@ -5,7 +6,6 @@ import { useRouter } from "next/router"
 import { useEffect } from "react"
 import Link from "next/link"
 import Header from "@/components/header"
-
 type propType = {
 	notFound?: boolean
 	id?: string
@@ -16,7 +16,7 @@ export default function Success(props: propType) {
 	const router = useRouter()
 	// @ts-ignore
 	const booking = JSON.parse(props.booking) as BookingType
-
+	console.log(booking)
 	const keys = Object.keys(booking)
 	useEffect(() => {
 		if (props.notFound) {
@@ -39,28 +39,8 @@ export default function Success(props: propType) {
 					<h1>Thank You!</h1>
 					<div className="mx-auto">
 						<table className="text-left w-[500px] mt-6 ">
-							{keys.map((key, index) => {
-								if (key === "fromDate" || key === "toDate") {
-									return (
-										<tr key={index}>
-											<td className="uppercase pr-2">
-												{key}
-											</td>
-											<td>
-												{new Date(
-													booking[key]
-												).toDateString()}
-											</td>
-										</tr>
-									)
-								}
-								if (
-									key !== "_id" &&
-									key !== "createdAt" &&
-									key !== "updatedAt" &&
-									key !== "__v" &&
-									key !== "roomType"
-								) {
+							<tbody>
+								{keys.map((key, index) => {
 									return (
 										<tr key={index}>
 											<td className="uppercase pr-2">
@@ -70,8 +50,8 @@ export default function Success(props: propType) {
 											<td>{booking[key]}</td>
 										</tr>
 									)
-								}
-							})}
+								})}
+							</tbody>
 						</table>
 					</div>
 					<div className="flex justify-center gap-3">
@@ -101,16 +81,38 @@ export async function getServerSideProps(q: any) {
 
 	try {
 		const booking = await BookingModel.findById(q.query.id)
-		console.log(booking)
+			.populate("roomType")
+			.populate("flat")
+
 		if (!booking) {
 			return {
 				notFound: true,
 			}
 		}
+
+		const b: {
+			[key: string]: string | number
+		} = {}
+
+		b["id"] = booking._id.toString()
+		b["FirstName"] = booking.firstName
+		b["LastName"] = booking.lastName
+		b["Email"] = booking.email
+		b["Phone"] = booking.phone
+		b["From"] = booking.fromDate.toISOString().split("T")[0]
+		b["To"] = booking.toDate.toISOString().split("T")[0]
+		b["Number of Guests"] = booking.numberOfGuests
+		b["Payment Method"] = booking.paymentMethod
+		b["Tip"] = booking.tips
+		b["Total"] = booking.total
+		b["Status"] = booking.status
+		b["Room Type"] = booking.roomType.name
+		b["Flat"] = booking.flat.name
+		console.log(b)
 		return {
 			props: {
 				id: q.query.id,
-				booking: JSON.stringify(booking),
+				booking: JSON.stringify(b),
 			},
 		}
 	} catch (e) {

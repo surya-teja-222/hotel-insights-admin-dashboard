@@ -93,6 +93,7 @@ export async function getServerSideProps(context: { query: { id: any } }) {
 	data.id = data._id.toString()
 	delete data._id
 	delete data.__v
+	delete data.flat
 	var from = data.fromDate
 	var to = data.toDate
 	delete data.fromDate

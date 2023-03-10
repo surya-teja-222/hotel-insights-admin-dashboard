@@ -2,6 +2,7 @@ import { NextApiRequest, NextApiResponse } from "next"
 import dbConnect from "@/lib/dbConnect"
 import Booking, { BookingType } from "@/models/Booking.model"
 import Room from "@/models/Room.model"
+import flatModel from "@/models/flat.model"
 export type inputType = {
 	firstName: string
 	lastName: string
@@ -54,7 +55,34 @@ export default async function Handler(
 
 		try {
 			const booking = await Booking.create(newBooking)
-			res.status(200).json({ success: true, data: booking })
+
+			// find the flats of the room type
+			const flats = await flatModel.find({
+				type: data.roomType,
+				occupied: false,
+			})
+
+			// if there are no flats available
+			if (flats.length === 0) {
+				booking.status = "Pending"
+				await booking.save()
+				res.status(200).json({ success: true, data: booking })
+			} else {
+				// find the first flat that is available
+				const flat = flats[0]
+				// set the flat to occupied
+				flat.occupied = true
+				flat.user = booking._id
+				flat.email = booking.email
+				// save the flat
+				await flat.save()
+				console.log(flat)
+				// set the flat of the booking to the flat that is occupied
+				booking.flat = flat._id
+				// save the booking
+				await booking.save()
+				res.status(200).json({ success: true, data: booking })
+			}
 		} catch (error) {
 			console.log(error)
 			res.status(400).json({ success: false })

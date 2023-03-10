@@ -435,6 +435,7 @@ export async function getServerSideProps(q: any) {
 	var to = bookingData.toDate
 	delete bookingData.fromDate
 	delete bookingData.toDate
+	delete bookingData.flat
 	bookingData.fromDate = from.toDateString()
 	bookingData.toDate = to.toDateString()
 	console.log(bookingData)

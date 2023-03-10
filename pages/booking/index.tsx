@@ -159,9 +159,7 @@ export default function Booking(props: { booking: BookingType[] }) {
 						}}
 						initialState={{
 							sorting: {
-								sortModel: [
-									{ field: "fromDate", sort: "asce" },
-								],
+								sortModel: [{ field: "fromDate", sort: "asc" }],
 							},
 						}}
 					/>
@@ -173,6 +171,7 @@ export default function Booking(props: { booking: BookingType[] }) {
 
 export async function getServerSideProps() {
 	await dbConnect()
+
 	const res = await BookingModel.find({}).populate("roomType")
 	const data = res.map((doc, idx) => {
 		const booking: BookingType = doc.toObject()
@@ -186,6 +185,11 @@ export async function getServerSideProps() {
 		// @ts-ignore
 		delete booking.roomType
 		booking.roomType = roomType
+
+		// @ts-ignore
+		var flat = booking.flat
+		// @ts-ignore
+		delete booking.flat
 
 		var fromDate = new Date(booking.fromDate).toLocaleDateString()
 		// @ts-ignore
