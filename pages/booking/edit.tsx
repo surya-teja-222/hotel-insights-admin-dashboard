@@ -3,16 +3,24 @@ import Select from "@mui/material/Select"
 import MenuItem from "@mui/material/MenuItem"
 import dbConnect from "@/lib/dbConnect"
 import Rooms, { RoomType } from "@/models/Room.model"
+import Booking, { BookingType } from "@/models/Booking.model"
 import React, { useEffect, useState } from "react"
 import { useRouter } from "next/router"
-import Head from "next/head"
 import Header from "@/components/header"
 
-export default function AddBookingPage(props: { rooms: RoomType[] }) {
-	const [roomType, setRoomType] = useState<string>("")
-	const [fromDate, setFromDate] = useState<number>(new Date().getTime())
-	const [toDate, setToDate] = useState<number>(new Date().getTime())
-	const [tip, setTip] = useState<number>(0)
+export default function EditBookingPage(props: {
+	rooms: RoomType[]
+	booking: BookingType
+}) {
+	// @ts-ignore
+	const [roomType, setRoomType] = useState<string>(props.booking.roomType.id)
+	const [fromDate, setFromDate] = useState<number>(
+		new Date(props.booking.fromDate).getTime() + 86400000
+	)
+	const [toDate, setToDate] = useState<number>(
+		new Date(props.booking.toDate).getTime() + 86400000
+	)
+	const [tip, setTip] = useState<number>(props.booking.tips)
 	const router = useRouter()
 
 	useEffect(() => {
@@ -57,7 +65,9 @@ export default function AddBookingPage(props: { rooms: RoomType[] }) {
 		data["fromDate"] = fromDate
 		// @ts-ignore
 		data["toDate"] = toDate
-		const res = await fetch("/api/add/newBooking", {
+		// @ts-ignore
+		data["id"] = props.booking.id
+		const res = await fetch("/api/edit/booking", {
 			method: "POST",
 			body: JSON.stringify(data),
 		})
@@ -82,10 +92,6 @@ export default function AddBookingPage(props: { rooms: RoomType[] }) {
 			<Header />
 			<main className="bg-primaryBg p-4">
 				<h1 className="font-poppins font-bold text-2xl">Add Booking</h1>
-				<Head>
-					<title>Add New Booking | Hotel </title>
-					<link rel="icon" href="/favicon.ico" />
-				</Head>
 				<div className="mt-6 bg-white py-4 border shadow-sm rounded-md min-h-[300px]">
 					<form onSubmit={handleSubmit}>
 						<div className="grid grid-cols-3 gap-4 px-4 font-poppins">
@@ -103,6 +109,7 @@ export default function AddBookingPage(props: { rooms: RoomType[] }) {
 									placeholder="First Name"
 									name="firstName"
 									fullWidth
+									defaultValue={props.booking.firstName}
 								/>
 							</div>
 							<div className="p-3">
@@ -119,6 +126,7 @@ export default function AddBookingPage(props: { rooms: RoomType[] }) {
 									placeholder="Last Name"
 									name="lastName"
 									fullWidth
+									defaultValue={props.booking.lastName}
 								/>
 							</div>
 							<div className="p-3 flex flex-col">
@@ -154,6 +162,7 @@ export default function AddBookingPage(props: { rooms: RoomType[] }) {
 									placeholder="Email"
 									name="email"
 									fullWidth
+									defaultValue={props.booking.email}
 								/>
 							</div>
 							<div className="p-3">
@@ -170,6 +179,7 @@ export default function AddBookingPage(props: { rooms: RoomType[] }) {
 									placeholder="Phone"
 									name="phone"
 									fullWidth
+									defaultValue={props.booking.phone}
 								/>
 							</div>
 							<div className="p-3 flex flex-col">
@@ -184,7 +194,8 @@ export default function AddBookingPage(props: { rooms: RoomType[] }) {
 									label="Room Type"
 									variant="filled"
 									name="roomType"
-									defaultValue={"Select"}
+									// @ts-ignore
+									defaultValue={props.booking.roomType.id}
 									onChange={(e) =>
 										setRoomType(e.target.value)
 									}
@@ -226,6 +237,9 @@ export default function AddBookingPage(props: { rooms: RoomType[] }) {
 									fullWidth
 									id="fromDate"
 									type={"date"}
+									defaultValue={new Date(fromDate)
+										.toISOString()
+										.slice(0, 10)}
 									onChange={(e) =>
 										setFromDate(
 											new Date(e.target.value).getTime()
@@ -247,6 +261,9 @@ export default function AddBookingPage(props: { rooms: RoomType[] }) {
 									name="toDate"
 									id="toDate"
 									fullWidth
+									defaultValue={new Date(toDate)
+										.toISOString()
+										.slice(0, 10)}
 									type={"date"}
 									onChange={(e) =>
 										setToDate(
@@ -268,6 +285,7 @@ export default function AddBookingPage(props: { rooms: RoomType[] }) {
 									placeholder="Number of Persons"
 									name="numberOfGuests"
 									fullWidth
+									defaultValue={props.booking.numberOfGuests}
 									type={"number"}
 								/>
 							</div>
@@ -282,7 +300,7 @@ export default function AddBookingPage(props: { rooms: RoomType[] }) {
 									required
 									label="Payment Method"
 									variant="filled"
-									defaultValue={"Cash"}
+									defaultValue={props.booking.paymentMethod}
 									name="paymentMethod"
 								>
 									<MenuItem value={"Cash"}>Cash</MenuItem>
@@ -384,7 +402,7 @@ export default function AddBookingPage(props: { rooms: RoomType[] }) {
 								type="submit"
 								className="p-4 bg-green-300 w-[100px] hover:scale-[1.1] transition-all duration-100 ease-in-out rounded-md text-blue-900 font-semibold"
 							>
-								BOOK
+								UPDATE
 							</button>
 						</div>
 					</form>
@@ -394,7 +412,10 @@ export default function AddBookingPage(props: { rooms: RoomType[] }) {
 	)
 }
 
-export async function getServerSideProps() {
+export async function getServerSideProps(q: any) {
+	console.log(q.query.id)
+
+	const roomType = q.query.id
 	await dbConnect()
 	const res = await Rooms.find({})
 	const data = res.map((doc: { toObject: () => any }) => {
@@ -404,9 +425,24 @@ export async function getServerSideProps() {
 		return el
 	})
 
+	const booking = await Booking.findById(roomType).populate("roomType")
+	const bookingData = booking.toObject()
+	bookingData.id = bookingData._id.toString()
+	delete bookingData._id
+	bookingData.roomType.id = bookingData.roomType._id.toString()
+	delete bookingData.roomType._id
+	var from = bookingData.fromDate
+	var to = bookingData.toDate
+	delete bookingData.fromDate
+	delete bookingData.toDate
+	bookingData.fromDate = from.toDateString()
+	bookingData.toDate = to.toDateString()
+	console.log(bookingData)
+
 	return {
 		props: {
 			rooms: data as RoomType[],
+			booking: bookingData as BookingType,
 		},
 	}
 }
