@@ -6,7 +6,14 @@ module.exports = {
 		"./components/**/*.{js,ts,jsx,tsx}",
 	],
 	theme: {
-		extend: {},
+		extend: {
+			fontFamily: {
+				poppins: ["Poppins", "sans-serif"],
+			},
+			colors: {
+				primaryBg: "#fbf4dd",
+			},
+		},
 	},
 	plugins: [],
 }
