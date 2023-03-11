@@ -4,7 +4,7 @@ This is a Hotel Admin website developed with Next.js and Mongoose, aimed at help
 
 This is a part of a take away assignment for a job interview.
 
-## NoteWorthy Features
+## Features
 
 -   Fully responsive
 -   Realtime data updates
@@ -97,8 +97,12 @@ pnpm dev
 
 ## Technologies Used
 
--   Next.js
+-   Next.js (TypeScript)
 -   Mongoose
 -   Tailwind
 -   Mongoose
 -   Gsap
+
+## Author
+
+[Surya Teja Reddy](https://www.linkedin.com/in/suryateja222/)
