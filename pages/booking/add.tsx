@@ -7,6 +7,9 @@ import React, { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import Head from "next/head"
 import Header from "@/components/header"
+import mongoose from "mongoose"
+import RoomSchema from "@/models/Room.model"
+import gsap from "gsap"
 
 export default function AddBookingPage(props: { rooms: RoomType[] }) {
 	const [roomType, setRoomType] = useState<string>("")
@@ -396,6 +399,9 @@ export default function AddBookingPage(props: { rooms: RoomType[] }) {
 
 export async function getServerSideProps() {
 	await dbConnect()
+
+	var Rooms = mongoose.models.Rooms || mongoose.model("Rooms", RoomSchema)
+
 	const res = await Rooms.find({})
 	const data = res.map((doc: { toObject: () => any }) => {
 		const el = doc.toObject()

@@ -1,11 +1,16 @@
 // @ts-no-check
 /* eslint-disable @next/next/no-img-element */
 import dbConnect from "@/lib/dbConnect"
-import BookingModel, { BookingType } from "@/models/Booking.model"
+import { BookingType } from "@/models/Booking.model"
 import { useRouter } from "next/router"
 import { useEffect } from "react"
 import Link from "next/link"
 import Header from "@/components/header"
+import mongoose from "mongoose"
+import BookingSchema from "@/models/Booking.model"
+import RoomSchema from "@/models/Room.model"
+import FlatSchema from "@/models/flat.model"
+import gsap from "gsap"
 type propType = {
 	notFound?: boolean
 	id?: string
@@ -25,6 +30,14 @@ export default function Success(props: propType) {
 			})
 		}
 	}, [])
+	useEffect(() => {
+		// apply a fade in animation to everything in the body
+		gsap.from("*", {
+			duration: 1,
+			translateY: 15,
+			opacity: 0,
+		})
+	}, [])
 
 	return (
 		<>
@@ -37,6 +50,7 @@ export default function Success(props: propType) {
 						alt=""
 					/>
 					<h1>Thank You!</h1>
+					<p>Please check your email for confirmation</p>
 					<div className="mx-auto">
 						<table className="text-left w-[500px] mt-6 ">
 							<tbody>
@@ -78,7 +92,11 @@ export default function Success(props: propType) {
 export async function getServerSideProps(q: any) {
 	await dbConnect()
 	console.log(q.query.id)
-
+	var BookingModel =
+		mongoose.models.Booking || mongoose.model("Booking", BookingSchema)
+	var RoomTypeModel =
+		mongoose.models.Room || mongoose.model("Room", RoomSchema)
+	var FlatModel = mongoose.models.Flat || mongoose.model("Flat", FlatSchema)
 	try {
 		const booking = await BookingModel.findById(q.query.id)
 			.populate("roomType")

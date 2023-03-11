@@ -3,10 +3,20 @@ import Link from "next/link"
 import { useRouter } from "next/router"
 
 import dbConnect from "@/lib/dbConnect"
-import Booking, { BookingType } from "@/models/Booking.model"
+import BookingSchema, { BookingType } from "@/models/Booking.model"
 import Header from "@/components/header"
-
+import mongoose from "mongoose"
+import { useEffect } from "react"
+import gsap from "gsap"
 const CancelBooking = (params: { booking: BookingType }) => {
+	useEffect(() => {
+		// apply a fade in animation to everything in the body
+		gsap.from("*", {
+			duration: 1,
+			translateY: 15,
+			opacity: 0,
+		})
+	}, [])
 	const router = useRouter()
 	var refundAmt = 0
 
@@ -88,6 +98,8 @@ export default CancelBooking
 export async function getServerSideProps(context: { query: { id: any } }) {
 	var id = context.query.id
 	await dbConnect()
+	var Booking =
+		mongoose.models.Booking || mongoose.model("Booking", BookingSchema)
 	var d = await Booking.findById(id)
 	var data = d.toObject()
 	data.id = data._id.toString()

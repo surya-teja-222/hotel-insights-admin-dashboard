@@ -5,11 +5,17 @@ import {
 	GridRenderCellParams,
 	GridToolbar,
 } from "@mui/x-data-grid"
+import mongoose from "mongoose"
 
 import dbConnect from "@/lib/dbConnect"
-import BookingModel, { BookingType } from "@/models/Booking.model"
+import RoomModel from "@/models/Room.model"
+import { BookingType } from "@/models/Booking.model"
 import Head from "next/head"
 import Header from "@/components/header"
+import BookingSchema from "@/models/Booking.model"
+import RoomSchema from "@/models/Room.model"
+import { useEffect } from "react"
+import gsap from "gsap"
 // @ts-ignore
 function Item(params: GridRenderCellParams<string>) {
 	return (
@@ -114,6 +120,14 @@ columns.forEach((column) => {
 })
 
 export default function Booking(props: { booking: BookingType[] }) {
+	useEffect(() => {
+		// apply a fade in animation to everything in the body
+		gsap.from("*", {
+			duration: 1,
+			translateY: 15,
+			opacity: 0,
+		})
+	}, [])
 	return (
 		<>
 			<Header />
@@ -172,6 +186,10 @@ export default function Booking(props: { booking: BookingType[] }) {
 export async function getServerSideProps() {
 	await dbConnect()
 
+	var BookingModel =
+		mongoose.models.Booking || mongoose.model("Booking", BookingSchema)
+	var RoomTypeModel =
+		mongoose.models.Room || mongoose.model("Room", RoomSchema)
 	const res = await BookingModel.find({}).populate("roomType")
 	const data = res.map((doc, idx) => {
 		const booking: BookingType = doc.toObject()

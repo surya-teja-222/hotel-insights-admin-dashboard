@@ -1,12 +1,14 @@
 import { DataGrid, GridColDef, GridRowsProp } from "@mui/x-data-grid"
 import Modal from "@mui/material/Modal"
+import mongoose from "mongoose"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import dbConnect from "@/lib/dbConnect"
 import Rooms from "@/models/Room.model"
 import { useRouter } from "next/router"
 import Header from "@/components/header"
-
+import RoomSchema from "@/models/Room.model"
+import gsap from "gsap"
 const columns: GridColDef[] = [
 	{
 		field: "name",
@@ -46,6 +48,14 @@ export default function RoomType({ rooms }) {
 	const refreshData = () => {
 		router.replace(router.asPath)
 	}
+	useEffect(() => {
+		// apply a fade in animation to everything in the body
+		gsap.from("*", {
+			duration: 1,
+			translateY: 10,
+			opacity: 0,
+		})
+	}, [])
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
@@ -240,6 +250,7 @@ export default function RoomType({ rooms }) {
 
 export async function getServerSideProps() {
 	await dbConnect()
+	var Rooms = mongoose.models.Room || mongoose.model("Room", RoomSchema)
 	const res = await Rooms.find({})
 	const data = res.map((doc, idx) => {
 		const room = doc.toObject()

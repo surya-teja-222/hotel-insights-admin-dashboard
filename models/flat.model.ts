@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-
+import BookingModel from "./Booking.model"
 const FlatSchema = new mongoose.Schema({
 	name: {
 		type: String,
@@ -39,4 +39,4 @@ export type FlatType = {
 	status: "Active" | "InActive"
 }
 
-export default mongoose.models.Flat || mongoose.model("Flat", FlatSchema)
+export default FlatSchema

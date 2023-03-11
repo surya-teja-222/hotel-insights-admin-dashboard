@@ -7,7 +7,10 @@ import Booking, { BookingType } from "@/models/Booking.model"
 import React, { useEffect, useState } from "react"
 import { useRouter } from "next/router"
 import Header from "@/components/header"
-
+import mongoose from "mongoose"
+import RoomSchema from "@/models/Room.model"
+import BookingSchema from "@/models/Booking.model"
+import gsap from "gsap"
 export default function EditBookingPage(props: {
 	rooms: RoomType[]
 	booking: BookingType
@@ -417,6 +420,9 @@ export async function getServerSideProps(q: any) {
 
 	const roomType = q.query.id
 	await dbConnect()
+	var Rooms = mongoose.models.Rooms || mongoose.model("Rooms", RoomSchema)
+	var Booking =
+		mongoose.models.Booking || mongoose.model("Booking", BookingSchema)
 	const res = await Rooms.find({})
 	const data = res.map((doc: { toObject: () => any }) => {
 		const el = doc.toObject()

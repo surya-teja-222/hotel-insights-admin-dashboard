@@ -1,11 +1,14 @@
 import { DataGrid, GridColDef } from "@mui/x-data-grid"
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import dbConnect from "@/lib/dbConnect"
-import Flats from "@/models/flat.model"
 import { useRouter } from "next/router"
 import Header from "@/components/header"
-
+import BookingModel from "@/models/Booking.model"
+import Flats from "@/models/flat.model"
+import mongoose from "mongoose"
+import RoomSchema from "@/models/Room.model"
+import gsap from "gsap"
 const columns: GridColDef[] = [
 	{
 		field: "Name",
@@ -55,7 +58,14 @@ export default function Roo({ rooms }) {
 	const refreshData = () => {
 		router.replace(router.asPath)
 	}
-
+	useEffect(() => {
+		// apply a fade in animation to everything in the body
+		gsap.from("*", {
+			duration: 1,
+			translateY: 10,
+			opacity: 0,
+		})
+	}, [])
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
 		// get form data
@@ -102,7 +112,12 @@ export default function Roo({ rooms }) {
 
 export async function getServerSideProps() {
 	await dbConnect()
-	const res = await Flats.find({}).populate("type").populate("user")
+	var FlatsS = mongoose.models.Flat || mongoose.model("Flat", Flats)
+	var BookingSchema =
+		mongoose.models.Booking || mongoose.model("Booking", BookingModel)
+	var RoomS = mongoose.models.Room || mongoose.model("Room", RoomSchema)
+
+	const res = await FlatsS.find({}).populate("type").populate("user")
 	const data = res.map((doc, idx) => {
 		return doc.toObject()
 	})
@@ -122,7 +137,7 @@ export async function getServerSideProps() {
 			// @ts-ignore
 			d["Room Type"] = room.type.name
 			// @ts-ignore
-			d["Price"] = room.type.price
+			d["Price"] = room.type ? room.type.price : "N/A"
 			d["AC/Non-AC"] = "AC"
 			d["Occupied"] = room.occupied ? "Yes" : "No"
 			d["Status"] = room.occupied ? "Occupied" : "Vacant"
@@ -130,7 +145,7 @@ export async function getServerSideProps() {
 			k.push(d)
 		}
 	)
-	console.log(k)
+
 	return {
 		props: {
 			rooms: k,

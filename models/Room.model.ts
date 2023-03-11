@@ -32,4 +32,4 @@ export type RoomType = {
 	status: "Active" | "InActive"
 }
 
-export default mongoose.models.Room || mongoose.model("Room", RoomSchema)
+export default RoomSchema

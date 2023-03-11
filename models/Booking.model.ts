@@ -1,4 +1,6 @@
 import mongoose from "mongoose"
+import flatModel from "./flat.model"
+import roomModel from "./Room.model"
 
 const BookingSchema = new mongoose.Schema({
 	firstName: {
@@ -76,5 +78,4 @@ export type BookingType = {
 	status: string
 }
 
-export default mongoose.models.Booking ||
-	mongoose.model("Booking", BookingSchema)
+export default BookingSchema

@@ -1,6 +1,17 @@
 import dbConnect from "@/lib/dbConnect"
-import RoomType from "@/models/Room.model"
-import FlatModel from "@/models/flat.model"
+
+import mongoose from "mongoose"
+
+import RoomSchema from "@/models/Room.model"
+import BookingSchema from "@/models/Booking.model"
+import FlatSchema from "@/models/flat.model"
+
+const Room = mongoose.models.Room || mongoose.model("Room", RoomSchema)
+const Booking =
+	mongoose.models.Booking || mongoose.model("Booking", BookingSchema)
+const Flat = mongoose.models.Flat || mongoose.model("Flat", FlatSchema)
+
+
 export default async function POST(request: Request) {
 	return new Promise(async (resolve, reject) => {
 		try {
@@ -11,7 +22,7 @@ export default async function POST(request: Request) {
 			dbConnect()
 			console.log(name, price, shortCode, count, status)
 
-			const roomType = new RoomType({
+			const roomType = new Room({
 				name,
 				price,
 				shortCode,
@@ -23,7 +34,7 @@ export default async function POST(request: Request) {
 
 			// create count number of flats
 			for (let i = 1; i <= count; i++) {
-				const flat = new FlatModel({
+				const flat = new Flat({
 					name: `${name} ${i}`,
 					type: roomType._id,
 					scode: shortCode,
