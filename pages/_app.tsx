@@ -1,5 +1,6 @@
 import "../styles/globals.css"
 import type { AppProps } from "next/app"
+import { StyledEngineProvider } from "@mui/material/styles"
 
 import Head from "next/head"
 export const metadata = {
@@ -31,7 +32,9 @@ export default function App({ Component, pageProps }: AppProps) {
 				<meta httpEquiv="X-UA-Compatible" content="IE=7" />
 				<link rel="icon" href="/vercel.svg" />
 			</Head>
-			<Component {...pageProps} />
+			<StyledEngineProvider injectFirst>
+				<Component {...pageProps} />
+			</StyledEngineProvider>
 		</>
 	)
 }

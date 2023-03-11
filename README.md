@@ -1,38 +1,104 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Hotel Insights - An admin facing Hotel Management Website
+
+This is a Hotel Admin website developed with Next.js and Mongoose, aimed at helping hotel owners manage their hotel operations such as bookings, room management.
+
+This is a part of a take away assignment for a job interview.
+
+## NoteWorthy Features
+
+-   Fully responsive
+-   Realtime data updates
+-   Admin can book rooms for customers
+-   Admin can manage bookings
+-   Admin can manage rooms
+-   An email is sent to the customer when a booking is made, edited or cancelled
+-   For more info check below
+
+## Overview
+
+# Home Page
+
+![Home Page](./markdown/homepage.png)
+This is the responsive homepage of the Dashboard.
+
+# Room Type
+
+![Room Type](./markdown/room-type.png)
+The admin can see details of various room types, and can add new room types.
+
+# Rooms
+
+![Rooms](./markdown/rooms.png)
+The admin can manage activities of each individual room!
+
+# Booking
+
+![Booking](./markdown/booking.png)
+The admin can book rooms for customers, and can also manage the bookings.
+All the data is updated in realtime.
+
+# Create Booking
+
+![Create Booking](./markdown/new-booking.png)
+The admin can create a booking for a customer with all the details updated in realtime.
+
+# Booking Confirmation
+
+![Booking Confirmation](./markdown/boking-confirmation.png)
+The admin can see the booking confirmation, and can also edit or cancel the booking.
+
+# Email
+
+![Email](./markdown/email.png)
+After a booking is made, edited or cancelled, an email is sent to the customer with all the details.
 
 ## Getting Started
 
-First, run the development server:
+To get started, clone the repository to your local machine:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
+git clone https://github.com/surya-teja-222/hotel-insights-admin-dashboard.git
+```
+
+## Prerequisites
+
+To run this project on your local machine, you need to have the following installed:
+
+Node.js
+MongoDB
+
+## Installing
+
+To install the dependencies, run the following command:
+
+```bash
+pnpm install
+```
+
+## Setting Up the Environment Variables
+
+You need to create a .env.local file in the root directory of the project, and add the following variables:
+
+```makefile
+MONGODB_URI=your_mongodb_uri
+EMAIL_USER=YOUR_EMAIL
+EMAIL_PASS=YOUR_EMAIL_PASSWORD
+```
+
+Replace your_mongodb_uri with the connection string to your MongoDB database and your_secret_key with a secret key of your choice.
+
+## Running the Application
+
+To run the application, use the following command:
+
+```bash
 pnpm dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Technologies Used
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+-   Next.js
+-   Mongoose
+-   Tailwind
+-   Mongoose
+-   Gsap

@@ -16,6 +16,9 @@ import BookingSchema from "@/models/Booking.model"
 import RoomSchema from "@/models/Room.model"
 import { useEffect } from "react"
 import gsap from "gsap"
+
+import Table from "@/components/Table"
+
 // @ts-ignore
 function Item(params: GridRenderCellParams<string>) {
 	return (
@@ -178,6 +181,17 @@ export default function Booking(props: { booking: BookingType[] }) {
 						}}
 					/>
 				</div>
+				{/* <div className="">
+					<Table
+						columns={["syr", "dfsd", "sdfsdf", "Sdfsdf"]}
+						data={[
+							["syr", "dfsd", "sdfsdf", "Sdfsdf"],
+							["syr", "dfsd", "sdfsdf", "Sdfsdf"],
+							["syr", "dfsd", "sdfsdf", "Sdfsdf"],
+							["syr", "dfsd", "sdfsdf", "Sdfsdf"],
+						]}
+					/>
+				</div> */}
 			</main>
 		</>
 	)

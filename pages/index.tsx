@@ -272,9 +272,9 @@ export async function getServerSideProps() {
 	rooms.forEach((room) => {
 		// @ts-ignore
 		if (!d1.labels.includes(room.type.name)) {
-		// @ts-ignore
+			// @ts-ignore
 			d1.labels.push(room.type.name)
-		// @ts-ignore
+			// @ts-ignore
 			d1.datasets[0].data.push(1)
 		} else {
 			// @ts-ignore
