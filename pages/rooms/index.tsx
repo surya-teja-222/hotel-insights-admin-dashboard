@@ -9,6 +9,7 @@ import Flats from "@/models/flat.model"
 import mongoose from "mongoose"
 import RoomSchema from "@/models/Room.model"
 import gsap from "gsap"
+import Head from "next/head"
 const columns: GridColDef[] = [
 	{
 		field: "Name",
@@ -82,6 +83,9 @@ export default function Roo({ rooms }) {
 	return (
 		<>
 			<Header />
+			<Head>
+				<title>🏢Hotel Insights | Rooms</title>
+			</Head>
 			<main className="p-4 bg-primaryBg">
 				<div className="flex p-4 justify-between">
 					<div>

@@ -29,7 +29,7 @@ export default function App({ Component, pageProps }: AppProps) {
 				<meta name="og:image" content="/favicon.ico" />
 				<meta name="og:description" content={metadata.description} />
 				<meta httpEquiv="X-UA-Compatible" content="IE=7" />
-				<link rel="icon" href="/favicon.ico" />
+				<link rel="icon" href="/vercel.svg" />
 			</Head>
 			<Component {...pageProps} />
 		</>

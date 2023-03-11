@@ -9,6 +9,7 @@ import { useRouter } from "next/router"
 import Header from "@/components/header"
 import RoomSchema from "@/models/Room.model"
 import gsap from "gsap"
+import Head from "next/head"
 const columns: GridColDef[] = [
 	{
 		field: "name",
@@ -73,6 +74,9 @@ export default function RoomType({ rooms }) {
 	return (
 		<>
 			<Header />
+			<Head>
+				<title>🏢Hotel Insights | Room Types Editor</title>
+			</Head>
 			<main className="p-4 bg-primaryBg">
 				<div className="flex p-4 justify-between">
 					<div>
