@@ -1,5 +1,5 @@
 import mongoose from "mongoose"
-import BookingModel from "./Booking.model"
+
 const FlatSchema = new mongoose.Schema({
 	name: {
 		type: String,

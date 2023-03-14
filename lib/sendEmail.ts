@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer"
-console.log(process.env.EMAIL_USER, process.env.EMAIL_PASS)
+
 var transporter = nodemailer.createTransport({
 	service: "gmail",
 	auth: {
@@ -13,6 +13,9 @@ export default function sendMail(
 	email: string,
 	subject: string
 ) {
+	/**
+	 * Default mail options
+	 */
 	var mailOptions = {
 		from: `"HOTEL INSIGHTS" <${process.env.EMAIL_USER}>`,
 		to: email,

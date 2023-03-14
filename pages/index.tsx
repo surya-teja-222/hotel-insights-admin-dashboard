@@ -42,10 +42,6 @@ export default function Home(params: {
 			count: number
 			profit: number
 		}
-		// last30Days: {
-		// 	count: number
-		// 	profit: number
-		// }
 		total: {
 			count: number
 			profit: number
@@ -213,22 +209,6 @@ export async function getServerSideProps() {
 		last7DaysBookingProfit += booking.total - booking.tips
 		if (booking.refundAmount) last7DaysBookingProfit -= booking.refundAmount
 	})
-
-	// var last30DaysBookings = await Booking.find({
-	// 	fromDate: {
-	// 		$lte: new Date().toISOString().slice(0, 10),
-	// 		$gte: new Date(new Date().setDate(new Date().getDate() - 30))
-	// 			.toISOString()
-	// 			.slice(0, 10),
-	// 	},
-	// })
-	// var last30DaysBookingsCount = last30DaysBookings.length
-	// var last30DaysBookingProfit = 0
-	// last30DaysBookings.forEach((booking) => {
-	// 	last30DaysBookingProfit += booking.total - booking.tips
-	// 	if (booking.refundAmount)
-	// 		last30DaysBookingProfit -= booking.refundAmount
-	// })
 
 	var totalBookings = await Booking.find({})
 	var totalBookingsCount = totalBookings.length

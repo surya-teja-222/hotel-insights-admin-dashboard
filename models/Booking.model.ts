@@ -1,6 +1,4 @@
 import mongoose from "mongoose"
-import flatModel from "./flat.model"
-import roomModel from "./Room.model"
 
 const BookingSchema = new mongoose.Schema({
 	firstName: {
