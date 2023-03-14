@@ -28,3 +28,12 @@ td {
 .pie-box {
 	@apply flex flex-col text-blue-700 text-3xl;
 }
+
+.room-table-header {
+	@apply font-poppins text-lg font-semibold bg-blue-500 text-white;
+}
+
+/* Button */
+.add-btn {
+	@apply p-3 my-auto w-fit h-fit bg-blue-500 rounded-full scale-[1] hover:scale-[1.1] transition-all ease-in-out duration-100;
+}

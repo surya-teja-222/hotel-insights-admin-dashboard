@@ -49,8 +49,7 @@ const columns: GridColDef[] = [
 ]
 
 columns.forEach((column) => {
-	column.headerClassName =
-		"font-poppins text-lg font-semibold bg-blue-500 text-white"
+	column.headerClassName = "room-table-header"
 })
 // @ts-ignore
 export default function Roo({ rooms }) {
@@ -67,18 +66,6 @@ export default function Roo({ rooms }) {
 			opacity: 0,
 		})
 	}, [])
-	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		e.preventDefault()
-		// get form data
-		const formData = new FormData(e.currentTarget)
-		const data = Object.fromEntries(formData.entries())
-		const res = fetch("/api/add/roomType", {
-			method: "POST",
-			body: JSON.stringify(data),
-		})
-		setEditModalOpen(false)
-		refreshData()
-	}
 
 	return (
 		<>

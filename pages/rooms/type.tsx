@@ -39,8 +39,7 @@ const columns: GridColDef[] = [
 ]
 
 columns.forEach((column) => {
-	column.headerClassName =
-		"font-poppins text-lg font-semibold bg-blue-500 text-white"
+	column.headerClassName = "room-table-header"
 })
 // @ts-ignore
 export default function RoomType({ rooms }) {
@@ -50,7 +49,6 @@ export default function RoomType({ rooms }) {
 		router.replace(router.asPath)
 	}
 	useEffect(() => {
-		// apply a fade in animation to everything in the body
 		gsap.from("*", {
 			duration: 1,
 			translateY: 10,
@@ -87,7 +85,7 @@ export default function RoomType({ rooms }) {
 						</p>
 					</div>
 					<button
-						className="p-3 my-auto w-fit h-fit bg-blue-500 rounded-full scale-1 hover:scale-[1.1] transition-all ease-in-out duration-100"
+						className="add-btn"
 						onClick={() => setEditModalOpen(true)}
 					>
 						<svg
@@ -254,13 +252,14 @@ export default function RoomType({ rooms }) {
 
 export async function getServerSideProps() {
 	await dbConnect()
+	// @ts-ignore
 	var Rooms = mongoose.models.Room || mongoose.model("Room", RoomSchema)
-	const res = await Rooms.find({})
+	const res = await Rooms.find({}).lean()
 	const data = res.map((doc, idx) => {
-		const room = doc.toObject()
-		room.id = idx + 1
-		delete room._id
-		return room
+		console.log(doc)
+		doc.id = idx + 1
+		delete doc._id
+		return doc
 	})
 
 	return {
