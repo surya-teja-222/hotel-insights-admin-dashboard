@@ -13,24 +13,6 @@ import { useEffect } from "react"
 
 import { gsap } from "gsap"
 ChartJS.register(ArcElement, Tooltip, Legend)
-export const data = {
-	labels: ["Red", "Blue", "Yellow", "Green", "Purple", "Orange"],
-	datasets: [
-		{
-			label: "# of Votes",
-			data: [12, 19, 3, 5, 2, 3],
-			backgroundColor: [
-				"rgba(255, 99, 132, 0.2)",
-				"rgba(54, 162, 235, 0.2)",
-				"rgba(255, 206, 86, 0.2)",
-				"rgba(75, 192, 192, 0.2)",
-				"rgba(153, 102, 255, 0.2)",
-				"rgba(255, 159, 64, 0.2)",
-			],
-			borderWidth: 1,
-		},
-	],
-}
 
 export default function Home(params: {
 	bookings: {
@@ -80,7 +62,7 @@ export default function Home(params: {
 					</div>
 				</div>
 				<div className="w-full min-h-8 flex justify-around gap-6">
-					<div className="h-[200px] p-4 text-blue-900 flex flex-col rounded-md justify-between gap-2 font-poppins w-[400px] shadow-lg bg-[#fff] hover:scale-[1.01] cursor-pointer transition-all ease-out duration-100">
+					<div className="dash-cube">
 						<h1 className="text-xl font-semibold">
 							Total Bookings
 						</h1>
@@ -108,7 +90,7 @@ export default function Home(params: {
 							</svg>
 						</div>
 					</div>
-					<div className="h-[200px] p-4 text-blue-900 flex flex-col rounded-md justify-between gap-2 font-poppins w-[400px] shadow-lg  bg-[#fff] hover:scale-[1.01] cursor-pointer transition-all ease-out duration-100">
+					<div className="dash-cube">
 						<h1 className="text-xl font-semibold">Total Rooms</h1>
 						<h2 className="text-3xl">{params.rooms.roomCount}</h2>
 						<div className="flex justify-between">
@@ -132,7 +114,7 @@ export default function Home(params: {
 							</svg>
 						</div>
 					</div>
-					<div className="h-[200px] p-4 text-blue-900 flex flex-col rounded-md justify-between gap-2 font-poppins w-[400px] shadow-lg bg-[#fff] hover:scale-[1.01] cursor-pointer transition-all ease-out duration-100">
+					<div className="dash-cube">
 						<h1 className="text-xl font-semibold">Total Profits</h1>
 						<h2 className="text-3xl">
 							{params.bookings.total.profit}
@@ -160,11 +142,11 @@ export default function Home(params: {
 					</div>
 				</div>
 				<div className="flex w-full justify-around mt-8 ">
-					<div className="flex flex-col text-blue-700 text-3xl">
+					<div className="pie-box">
 						<h4 className="mx-auto">Total Rooms Available</h4>
 						<Pie data={params.rooms.d1} />
 					</div>
-					<div className="flex flex-col text-blue-700 text-3xl">
+					<div className="pie-box">
 						<h4 className="mx-auto">Total Rooms Booked</h4>
 						<Pie data={params.rooms.d2} />
 					</div>
